@@ -33,7 +33,7 @@ const FadeText = ({ children, delay = 0, className = "" }: { children: React.Rea
   const isInView = useInView(ref, { once: true, margin: "-10% 0px -10% 0px" });
 
   return (
-  return (
+
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 40 }}
@@ -44,10 +44,11 @@ const FadeText = ({ children, delay = 0, className = "" }: { children: React.Rea
       {children}
     </motion.div>
   );
+};
 
-  // --- MAIN PAGE ---
+// --- MAIN PAGE ---
 
-  export default function AlekryptLaunch() {
+export default function AlekryptLaunch() {
     const containerRef = useRef(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 

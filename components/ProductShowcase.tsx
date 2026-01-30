@@ -90,7 +90,7 @@ export const ProductShowcase = () => {
                     className="mt-32 text-center"
                 >
                     <p className="text-2xl md:text-4xl font-serif italic text-white/40 max-w-3xl mx-auto leading-relaxed">
-                        "The market does not wait. Neither should you."
+                        The market does not wait. Neither should you.
                     </p>
                 </motion.div>
             </div>
