@@ -1,6 +1,7 @@
 
 import type { Metadata } from "next";
 import { Oswald, Playfair_Display, Cinzel, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const oswald = Oswald({
@@ -43,6 +44,7 @@ export default function RootLayout({
         className={`${oswald.variable} ${playfair.variable} ${cinzel.variable} ${inter.variable} antialiased`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );
