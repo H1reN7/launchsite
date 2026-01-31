@@ -12,13 +12,42 @@ interface RequestAccessProps {
 export const RequestAccessModal = ({ isOpen, onClose }: RequestAccessProps) => {
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({ name: "", email: "", goal: "" });
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // In a real app, send to API here
-        setTimeout(() => {
-            setStep(3); // Success
-        }, 1000);
+        setIsSubmitting(true);
+
+        try {
+            const response = await fetch("https://formspree.io/f/xvzrjqgg", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name: formData.name,
+                    email: formData.email,
+                    objective: formData.goal,
+                    _subject: `New Access Request from ${formData.name}`,
+                }),
+            });
+
+            if (response.ok) {
+                setStep(3); // Success
+            } else {
+                alert("Something went wrong. Please try again or contact us directly at alekrypt@gmail.com");
+            }
+        } catch (error) {
+            alert("Network error. Please try again or contact us directly at alekrypt@gmail.com");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const resetAndClose = () => {
+        setStep(1);
+        setFormData({ name: "", email: "", goal: "" });
+        onClose();
     };
 
     return (
@@ -43,7 +72,7 @@ export const RequestAccessModal = ({ isOpen, onClose }: RequestAccessProps) => {
                     >
                         <div className="bg-[#0a0a0a] border border-white/10 w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl relative pointer-events-auto">
                             <button
-                                onClick={onClose}
+                                onClick={resetAndClose}
                                 className="absolute top-6 right-6 p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors z-20"
                             >
                                 <X size={20} />
@@ -104,10 +133,11 @@ export const RequestAccessModal = ({ isOpen, onClose }: RequestAccessProps) => {
                                             </select>
                                         </div>
                                         <button
-                                            onClick={handleSubmit}
-                                            className="w-full py-4 bg-blue-600 text-white font-bold uppercase tracking-widest rounded-xl hover:bg-blue-500 transition-colors flex justify-center items-center gap-2"
+                                            onClick={handleFormSubmit}
+                                            disabled={!formData.goal || isSubmitting}
+                                            className="w-full py-4 bg-blue-600 text-white font-bold uppercase tracking-widest rounded-xl hover:bg-blue-500 transition-colors flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
-                                            Request Access
+                                            {isSubmitting ? "Submitting..." : "Request Access"}
                                         </button>
                                         <button onClick={() => setStep(1)} className="text-sm text-gray-500 hover:text-white uppercase tracking-widest mt-4">Back</button>
                                     </motion.div>
@@ -127,7 +157,7 @@ export const RequestAccessModal = ({ isOpen, onClose }: RequestAccessProps) => {
                                             We will contact you via secure channel if you are selected.
                                         </p>
                                         <button
-                                            onClick={onClose}
+                                            onClick={resetAndClose}
                                             className="mt-8 px-8 py-3 border border-white/20 rounded-full hover:bg-white/10 uppercase tracking-widest text-sm"
                                         >
                                             Close Transmission
