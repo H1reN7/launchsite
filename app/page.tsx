@@ -1,4 +1,36 @@
 "use client";
+// ...existing code...
+export function RequestAccessModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  // ...existing code...
+  return (
+    <div className={`modal ${isOpen ? "open" : ""}`} aria-hidden={!isOpen}>
+      {/* ...existing modal header / close button ... */}
+
+      <form
+        action="https://formspree.io/f/xvzrjqgg"
+        method="POST"
+        className="space-y-4"
+      >
+        <label className="block">
+          <span className="text-sm font-medium">Your email</span>
+          <input type="email" name="email" required className="mt-1 w-full" placeholder="you@domain.com" />
+        </label>
+
+        <label className="block">
+          <span className="text-sm font-medium">Your message</span>
+          <textarea name="message" required className="mt-1 w-full" rows={4} placeholder="Tell us why you want access" />
+        </label>
+
+        <div className="flex justify-end gap-2">
+          <button type="button" onClick={onClose} className="px-4 py-2">Cancel</button>
+          <button type="submit" className="px-6 py-2 bg-black text-white">Send</button>
+        </div>
+      </form>
+
+      {/* ...existing code... */}
+    </div>
+  );
+}
 
 import React, { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
@@ -220,4 +252,4 @@ export default function AlekryptLaunch() {
         </Section>
       </main>
     );
-  }
+}
